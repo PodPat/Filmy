@@ -26,6 +26,7 @@ namespace Filmy.Controllers
         // GET: FilmController/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
@@ -34,6 +35,7 @@ namespace Filmy.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Film film)
         {
+            film.Id = filmies.Count + 1;
             filmies.Add(film);
             return RedirectToAction("Index");
         }
@@ -41,28 +43,25 @@ namespace Filmy.Controllers
         // GET: FilmController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(filmies.FirstOrDefault(x => x.Id == id));
         }
 
         // POST: FilmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Film film)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Film film1 = filmies.FirstOrDefault(x  => x.Id == id);
+            film1.Tytul = film.Tytul;
+            film1.Opis = film.Opis;
+            film1.Ocena = film.Ocena;
+            return RedirectToAction("Index");
         }
 
         // GET: FilmController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(filmies.FirstOrDefault(x => x.Id == id));
         }
 
         // POST: FilmController/Delete/5
@@ -70,14 +69,12 @@ namespace Filmy.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
+
+            Film film1 = filmies.FirstOrDefault(x => x.Id == id);
+            filmies.Remove(film1);
+
+            return RedirectToAction("Index");
         }
     }
 }
