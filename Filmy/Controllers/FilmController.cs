@@ -20,7 +20,7 @@ namespace Filmy.Controllers
         // GET: FilmController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(filmies.FirstOrDefault(x=> x.Id == id));
         }
 
         // GET: FilmController/Create
@@ -32,16 +32,10 @@ namespace Filmy.Controllers
         // POST: FilmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Film film)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            filmies.Add(film);
+            return RedirectToAction("Index");
         }
 
         // GET: FilmController/Edit/5
